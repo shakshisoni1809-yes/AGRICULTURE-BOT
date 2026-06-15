@@ -13,18 +13,13 @@ st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout=
 # CLASSIC PROFESSIONAL 2-COLOR STYLING (NAVY & BRIGHT WHITE)
 st.markdown("""
 <style>
-    /* 1. Main App Background (Crisp Studio Light) */
     .stApp { 
         background-color: #F8FAFC; 
         color: #0F172A; 
     }
-    
-    /* 2. Sidebar Background (Deep Classic Navy) */
     [data-testid="stSidebar"] { 
         background-color: #1E293B; 
     }
-    
-    /* Sidebar Text Elements (White for sharp contrast) */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
@@ -32,14 +27,12 @@ st.markdown("""
     [data-testid="stSidebar"] label {
         color: #FFFFFF !important;
     }
-    
-    /* Global Headings (Deep Slate Navy) */
+
     h1, h2, h3 { 
         color: #1E293B; 
         font-weight: 700;
     }
-    
-    /* Professional Clean Buttons (Deep Navy) */
+
     .stButton > button {
         background-color: #1E293B;
         color: #FFFFFF;
@@ -51,17 +44,14 @@ st.markdown("""
         font-weight: 600;
         transition: all 0.2s ease-in-out;
     }
-    
-    /* Button Hover Interaction (Modern Inverted Blue) */
     .stButton > button:hover { 
         background-color: #38BDF8; 
         color: #0F172A;
         border: 1px solid #38BDF8;
     }
-    
-    /* Chat Message Elements (Polished Clean Cards) */
+
     .stChatMessage {
-        background-color: #FFFFFF !important;
+        background-color: black !important;
         border: 1px solid #E2E8F0;
         border-radius: 8px;
     }
@@ -177,7 +167,7 @@ def guardrail(question):
     except Exception:
         return "FARMING"
 
-# STATE CONFIGS
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = load_memory()
 
@@ -188,6 +178,11 @@ if "input_value" not in st.session_state:
 with st.sidebar:
     st.title("🌾 Agriculture Assistant")
     st.markdown("---")
+    st.markdown("I can help you with")
+    st.markdown("current weather")
+    st.markdown("live mandi price")
+    st.markdown("traetment and  diseases")
+    st.markdown("goverment schemes")
     if st.button("🗑️ Clear Chat History"):
         st.session_state.chat_history = []
         dump_memory([])
