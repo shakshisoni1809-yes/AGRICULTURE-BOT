@@ -5,10 +5,40 @@ import streamlit as st
 import chromadb
 from groq import Groq
 from dotenv import load_dotenv
-from langchain_community.tools import DuckDuckGoSearchRun
 
 load_dotenv()
-ddg_search = DuckDuckGoSearchRun()
+
+# Streamlit Configuration Setup (Fixed typo here)
+st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout="wide")
+
+# Custom Agricultural Styling
+st.markdown("""
+<style>
+    .stApp { 
+        background-color: #F8F9F5; 
+        color: #2B2927; 
+    }
+    [data-testid="stSidebar"] { 
+        background-color: #EAECE4; 
+    }
+    h1, h2 { 
+        color: #2E6F40; 
+    }
+    .stButton > button {
+        background-color: #2E6F40;
+        color: white;
+        border-radius: 10px;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+    }
+    .stButton > button:hover { 
+        background-color: #76B947; 
+        color: white; 
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # LLM INITIALIZATION
 GROQ_KEY = os.getenv("GROQ_API_KEY", "")
@@ -26,13 +56,12 @@ STRICT RULES:
 7. If question is unclear — ask farmer to clarify before answering
 8. Answer should be short and point to point"""
 
-# MEMORY MANAGEMENT
+# MEMORY MANAGEMENT (Persistent between app sessions)
 def load_memory():
     try:
         with open("agri.json", "r") as f:
             return json.load(f)
     except Exception:
-        # Fallback to an empty list so chat history can be appended safely
         return []
 
 def dump_memory(data):
@@ -80,7 +109,7 @@ if collection.count() == 0:
             "Soybean Yellow Mosaic caused by virus symptoms are yellow patches on leaves treatment is spray thiamethoxam",
             "Coconut Root Wilt caused by phytoplasma symptoms are yellowing drooping leaves treatment is inject oxytetracycline into trunk",
         ],
-        ids=[str(i) for i in range(0, 30)] 
+        ids=[str(i) for i in range(0, 30)]  
     )
 
 # TOOLS
@@ -93,16 +122,6 @@ def weather(city: str):
         return "City not found"
     except Exception as e:
         return f"Weather not available: {str(e)}"
-
-def mandi_price(state: str, crop: str):
-    try:
-        url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aab825d41931caae&format=json&filters[commodity]={crop}&filters[state]={state}"
-        r = requests.get(url, timeout=5)
-        shak = r.json()
-        record = shak["records"][0]
-        return f"Crop: {crop} | Market: {record['market']} | Price: {record['modal_price']} rupees"
-    except Exception:
-        return f"Sorry, I could not find price for {crop} in {state} right now."
 
 def search_rag(question):
     try:
@@ -134,62 +153,106 @@ Reply ONLY the category name. Nothing else."""}]
     except Exception:
         return "FARMING"
 
+# STREAMLIT UI SESSION STATES
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = load_memory()
 
-# INITIAL RUN
-chat_history = load_memory()
+if "input_value" not in st.session_state:
+    st.session_state.input_value = ""
 
-print('='*50)
-print("Hello! I am your agriculture assistant.")
-print("Ask me any type of farming related questions.")
-print("Enter 'quit' or 'exit' to exit.")
-print('='*50)
+# SIDEBAR (Fixed typo here)
+with st.sidebar:
+    st.title("🌾 Agriculture Assistant")
+    st.markdown("---")
+    st.markdown("**What I can do:**")
+    st.markdown("- Check Mandi Prices\n- Local Weather\n- Government Schemes\n- Disease Diagnosis")
+    st.markdown("---")
+    if st.button("🗑️ Clear Chat History"):
+        st.session_state.chat_history = []
+        dump_memory([])
+        st.rerun()
+    st.markdown("---")
+    st.caption("Built with RAG + Groq + Streamlit")
 
-# MAIN LOOP
-while True:
-    user_input = input("You: ").strip()
+# MAIN PAGE HEADER
+st.title("Agriculture Assistant")
+st.markdown("Your smart agricultural helper — treatment advice, mandi prices, government schemes, and more.")
+st.markdown("---")
 
-    if user_input.lower() in ["exit", "quit"]:
-        dump_memory(chat_history) 
-        print("Goodbye!")
-        break
+# SUGGESTION QUICK-BUTTONS (Fixed column typo & updated functional logic)
+st.markdown("### Try these questions:")
+col1, col2, col3, col4 = st.columns(4)
 
-    if not user_input:
-        continue
+with col1:
+    if st.button("🌤️ Weather in Chennai"):
+        st.session_state.input_value = "What is the current weather in chennai?"
+        st.rerun()
+with col2:
+    if st.button("🌾 Wheat Price in Punjab"):
+        st.session_state.input_value = "What is the mandi price of wheat in punjab?"
+        st.rerun()
+with col3:
+    if st.button("📋 PM Schemes"):
+        st.session_state.input_value = "what is PM scheme of government?"
+        st.rerun()
+with col4:
+    if st.button("🍂 Tomato Yellow Spots"):
+        st.session_state.input_value = "my tomato plant leaves are turning dry with yellow spots in it what should i do?"
+        st.rerun()
 
+# DISPLAY CHAT HISTORY
+for chat in st.session_state.chat_history:
+    with st.chat_message("user"):
+        st.write(chat["user"])
+    with st.chat_message("assistant"):
+        st.write(chat["bot"])
+
+# INTERACTIVE CHAT INPUT
+user_input = st.chat_input("Ask a farming question...", key="main_chat_input")
+
+# Use input value if set by quick buttons
+if st.session_state.input_value and not user_input:
+    user_input = st.session_state.input_value
+    st.session_state.input_value = "" # Clear prefill flag
+
+if user_input:
+    # Display user query immediately
+    with st.chat_message("user"):
+        st.write(user_input)
+        
+    # Process through safety guardrails
     category = guardrail(user_input)
     
     if category == "NON_FARMING":
-        reply = "I only help with farming questions."
-        print(f"Bot: {reply}\n")
-        continue
+        reply = "I can only help with farming-related questions."
+    elif category == "UNCLEAR":
+        reply = "Please provide more details or clarify your farming question."
+    else:
+        # Fetch data via RAG context
+        context = search_rag(user_input)
+        context_text = " ".join(context) if context else ""
 
-    if category == "UNCLEAR":
-        reply = "Please give more details about your farming question."
-        print(f"Bot: {reply}\n")
-        continue
+        current_systemprompt = base_systemprompt
+        if context_text:
+            current_systemprompt += f"\n\nRelevant Agricultural Knowledge:\n{context_text}"
 
-    # Retrieve context from DB
-    context = search_rag(user_input)
-    context_text = " ".join(context) if context else ""
+        try:
+            # Call Groq endpoint
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": current_systemprompt},
+                    {"role": "user", "content": f"Context/Reference Material:\n{context_text}\n\nQuestion: {user_input}"}
+                ]
+            )
+            reply = response.choices[0].message.content.strip()
+        except Exception as e:
+            reply = f"Sorry, I encountered an error generating your answer. ({e})"
 
-    # Refresh system prompt context cleanly for every question
-    current_systemprompt = base_systemprompt
-    if context_text:
-        current_systemprompt += f"\n\nRelevant Agricultural Knowledge:\n{context_text}"
-
-    try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": current_systemprompt},
-                {"role": "user", "content": f"Context/Reference Material:\n{context_text}\n\nQuestion: {user_input}"}
-            ]
-        )
-        reply = response.choices[0].message.content.strip()
-        print(f"Bot: {reply}\n")
+    # Display Bot Response
+    with st.chat_message("assistant"):
+        st.write(reply)
         
-        # Track history
-        chat_history.append({"user": user_input, "bot": reply})
-        
-    except Exception as e:
-        print(f"Bot: Sorry, I encountered an error creating your answer. ({e})\n")
+    # Save step records to history state & file
+    st.session_state.chat_history.append({"user": user_input, "bot": reply})
+    dump_memory(st.session_state.chat_history)
