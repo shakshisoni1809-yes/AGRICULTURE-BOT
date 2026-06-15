@@ -1,0 +1,7 @@
+streamlit
+chromadb
+langchain-community
+requests
+groq
+duckduckgo-search
+python-dotenv
