@@ -10,21 +10,21 @@ load_dotenv()
 # Streamlit Configuration Setup
 st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout="wide")
 
-# Custom Agricultural Styling
+# PROFESSIONAL 2-COLOR AGRICULTURAL STYLING
 st.markdown("""
 <style>
-    /* Main App Background - Soft, warm, premium 'Bone' tone */
+    /* 1. Main App Background (Bone) */
     .stApp { 
         background-color: #E5D7C4; 
         color: #354024; 
     }
     
-    /* Sidebar - Deep, rich 'Kombu Green' */
+    /* 2. Sidebar Background (Kombu Green) */
     [data-testid="stSidebar"] { 
         background-color: #354024; 
     }
     
-    /* Force sidebar text, headers, and labels to be a clean, readable 'Bone' tone */
+    /* Sidebar Text Elements (Bone) */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
@@ -33,40 +33,37 @@ st.markdown("""
         color: #E5D7C4 !important;
     }
     
-    /* Headings - Strong, deep 'Café Noir' earth brown */
+    /* Global Headings (Kombu Green) */
     h1, h2, h3 { 
-        color: #4C3D19; 
+        color: #354024; 
         font-weight: 700;
     }
     
-    /* Action Buttons - Natural 'Moss Green' */
+    /* Professional Clean Buttons (Kombu Green) */
     .stButton > button {
-        background-color: #889063;
-        color: white;
+        background-color: #354024;
+        color: #E5D7C4;
         border-radius: 8px;
-        border: none;
+        border: 1px solid #354024;
         width: 100%;
         padding: 12px;
         font-size: 14px;
         font-weight: 600;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: all 0.2s ease-in-out;
     }
     
-    /* Button Hover - Deepens slightly to 'Kombu Green' on hover */
+    /* Button Hover Interaction (Inverted Style) */
     .stButton > button:hover { 
-        background-color: #354024; 
-        color: #E5D7C4;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(53, 64, 36, 0.2);
+        background-color: #E5D7C4; 
+        color: #354024;
+        border: 1px solid #354024;
     }
     
-    /* Chat Message Blocks - Clean 'Tan' surfaces for easy reading */
+    /* Chat Message Elements */
     .stChatMessage {
-        background-color: #CFBB99 !important;
-        border: 1px solid #889063;
+        background-color: #E5D7C4 !important;
+        border: 1px solid #354024;
         border-radius: 10px;
-        color: #354024 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -86,7 +83,7 @@ STRICT RULES:
 6. Always respond in the same language the farmer uses.
 7. Answer should be short and point to point."""
 
-# KNOWLEDGE BASE DICTIONARY
+# INTERNAL KNOWLEDGE BASE
 KNOWLEDGE_BASE = [
     "PM Kisan gives 6000 rupees per year in 3 installments to farmers with less than 2 hectares land",
     "PM Fasal Bima Yojana is crop insurance government pays if crop destroyed by flood drought or pest",
@@ -120,7 +117,7 @@ KNOWLEDGE_BASE = [
     "Coconut Root Wilt caused by phytoplasma symptoms are yellowing drooping leaves treatment is inject oxytetracycline into trunk",
 ]
 
-# LIVE TOOLS
+# API TOOLS
 def get_weather(city: str):
     try:
         r = requests.get(f"https://wttr.in/{city}?format=j1", timeout=5)
@@ -133,22 +130,19 @@ def get_weather(city: str):
 
 def get_mandi_price(state: str, crop: str):
     try:
-        # Format names to Title Case for Gov API compliance
         state_formatted = state.strip().title()
         crop_formatted = crop.strip().title()
-        
         url = f"https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aab825d41931caae&format=json&filters[commodity]={crop_formatted}&filters[state]={state_formatted}"
         r = requests.get(url, timeout=5)
         data = r.json()
-        
         if "records" in data and len(data["records"]) > 0:
             record = data["records"][0]
             return f"🌾 **Mandi Price Update** | State: {state_formatted} | Crop: {crop_formatted} | Market: {record['market']} | Price: ₹{record['modal_price']} per quintal."
         return f"No live market price records found for {crop_formatted} in {state_formatted} right now."
     except Exception:
-        return f"Could not connect to the live price server for {crop} in {state}."
+        return f"Could not connect to the live price server."
 
-# MEMORY OPERATIONS
+# APP ENGINE CONTROLS
 def load_memory():
     try:
         with open("agri.json", "r") as f:
@@ -177,26 +171,20 @@ def guardrail(question):
     try:
         result = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content": f"""Classify this query into EXACTLY ONE category:
-FARMING
-UNCLEAR
-NON_FARMING
-
-Query: {question}
-Reply ONLY the category name."""}]
+            messages=[{"role": "user", "content": f"Classify this query into EXACTLY ONE category: FARMING, UNCLEAR, NON_FARMING. Query: {question}. Reply ONLY the category name."}]
         )
         return result.choices[0].message.content.strip()
     except Exception:
         return "FARMING"
 
-# STREAMLIT UI SETUP
+# STATE CONFIGS
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = load_memory()
 
 if "input_value" not in st.session_state:
     st.session_state.input_value = ""
 
-# SIDEBAR
+# SIDEBAR VIEW
 with st.sidebar:
     st.title("🌾 Agriculture Assistant")
     st.markdown("---")
@@ -205,12 +193,12 @@ with st.sidebar:
         dump_memory([])
         st.rerun()
 
-# HEADERS
+# MAIN CONTENT VIEW
 st.title("Agriculture Assistant")
 st.markdown("Your smart agricultural helper — treatment advice, live mandi prices, government schemes, and more.")
 st.markdown("---")
 
-# QUICK SUGGESTIONS
+# QUICK COMPONENT BUTTONS
 st.markdown("### Try these questions:")
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -230,13 +218,14 @@ with col4:
         st.session_state.input_value = "My tomato plant leaves are turning dry with yellow spots in it, what should I do?"
         st.rerun()
 
-# CHAT COMPONENT RENDER
+# CHAT HISTORICAL FEED
 for chat in st.session_state.chat_history:
     with st.chat_message("user"):
         st.write(chat["user"])
     with st.chat_message("assistant"):
         st.write(chat["bot"])
 
+# INPUT CAPTURE
 user_input = st.chat_input("Ask a farming question...")
 
 if st.session_state.input_value and not user_input:
@@ -271,7 +260,6 @@ if user_input:
             )
             raw_reply = response.choices[0].message.content.strip()
             
-            # INTERCEPT TOOL CALLS FOR LIVE DATA
             if "TOOL_CALL: WEATHER" in raw_reply:
                 city = raw_reply.split("WEATHER(")[1].split(")")[0]
                 reply = get_weather(city)
