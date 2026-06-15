@@ -13,28 +13,48 @@ st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout=
 # Custom Agricultural Styling
 st.markdown("""
 <style>
+    /* Main App: Light, crisp, clean workspace background */
     .stApp { 
-        background-color: #F8F9F5; 
-        color: #2B2927; 
+        background-color: #F4F7F4; 
+        color: #1A2E1A; 
     }
+    
+    /* Sidebar: Deep organic soil look for a solid premium contrast */
     [data-testid="stSidebar"] { 
-        background-color: #EAECE4; 
+        background-color: #1E3322; 
     }
-    h1, h2 { 
-        color: #2E6F40; 
+    
+    /* Sidebar text adjustment to make it readable over dark green */
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] span {
+        color: #F4F7F4 !important;
     }
+    
+    /* Headers: Vibrant, sharp Leaf Green */
+    h1, h2, h3 { 
+        color: #2E7D32; 
+        font-weight: 700;
+    }
+    
+    /* Buttons: Friendly, inviting Kelly Green */
     .stButton > button {
-        background-color: #2E6F40;
+        background-color: #4CAF50;
         color: white;
-        border-radius: 10px;
+        border-radius: 8px;
         border: none;
         width: 100%;
-        padding: 12px;
+        padding: 10px 16px;
         font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
     }
+    
+    /* Button Hover: Sunny, energetic Lime Accent */
     .stButton > button:hover { 
-        background-color: #76B947; 
-        color: white; 
+        background-color: #8BC34A; 
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 </style>
 """, unsafe_allow_html=True)
