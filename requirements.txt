@@ -1,7 +1,6 @@
 streamlit
-chromadb
-langchain-community
-requests
+chromadb>=0.4.24
+protobuf>=4.25.3
 groq
-duckduckgo-search
 python-dotenv
+requests
