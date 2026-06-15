@@ -13,58 +13,56 @@ st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout=
 # Custom Agricultural Styling
 st.markdown("""
 <style>
-    /* Main App Background - Clean, crisp white with a subtle hint of fresh mint */
+    /* 1. Main App Background (Bone) */
     .stApp { 
-        background-color: #F7FCF8; 
-        color: #112211; 
+        background-color: #E5D7C4; 
+        color: #354024; 
     }
     
-    /* Sidebar - Premium, deep forest night tone for strong contrast */
+    /* 2. Sidebar (Kombu Green) */
     [data-testid="stSidebar"] { 
-        background-color: #0F2916; 
+        background-color: #354024; 
     }
     
-    /* Forces sidebar text to be crisp white so it pops against the dark green */
+    /* Sidebar text uses the Bone color for crisp visibility */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] label {
-        color: #FFFFFF !important;
+        color: #E5D7C4 !important;
     }
     
-    /* Headings - Rich, healthy plant green */
+    /* Headings (Kombu Green) */
     h1, h2, h3 { 
-        color: #1B5E20; 
+        color: #354024; 
         font-weight: 700;
     }
     
-    /* Action Buttons - Vibrant Leaf Green */
+    /* Action Buttons (Kombu Green) */
     .stButton > button {
-        background-color: #2E7D32;
-        color: white;
+        background-color: #354024;
+        color: #E5D7C4;
         border-radius: 8px;
         border: none;
         width: 100%;
         padding: 12px;
         font-size: 14px;
         font-weight: 600;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: all 0.2s ease-in-out;
     }
     
-    /* Button Hover - Energetic, bright golden sprout green */
+    /* Button Hover (Inverts the colors) */
     .stButton > button:hover { 
-        background-color: #4CAF50; 
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(46, 125, 50, 0.2);
+        background-color: #E5D7C4; 
+        color: #354024;
+        border: 2px solid #354024;
     }
     
-    /* Chat Inputs & Message boxes visibility adjustments */
+    /* Chat Message Blocks (Clean Bone surfaces) */
     .stChatMessage {
-        background-color: #FFFFFF !important;
-        border: 1px solid #E8F5E9;
+        background-color: #E5D7C4 !important;
+        border: 1px solid #354024;
         border-radius: 10px;
     }
 </style>
