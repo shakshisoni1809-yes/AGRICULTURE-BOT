@@ -13,48 +13,59 @@ st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout=
 # Custom Agricultural Styling
 st.markdown("""
 <style>
-    /* Main App: Light, crisp, clean workspace background */
+    /* Main App Background - Clean, crisp white with a subtle hint of fresh mint */
     .stApp { 
-        background-color: #F4F7F4; 
-        color: #1A2E1A; 
+        background-color: #F7FCF8; 
+        color: #112211; 
     }
     
-    /* Sidebar: Deep organic soil look for a solid premium contrast */
+    /* Sidebar - Premium, deep forest night tone for strong contrast */
     [data-testid="stSidebar"] { 
-        background-color: #1E3322; 
+        background-color: #0F2916; 
     }
     
-    /* Sidebar text adjustment to make it readable over dark green */
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] span {
-        color: #F4F7F4 !important;
+    /* Forces sidebar text to be crisp white so it pops against the dark green */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] span, 
+    [data-testid="stSidebar"] label {
+        color: #FFFFFF !important;
     }
     
-    /* Headers: Vibrant, sharp Leaf Green */
+    /* Headings - Rich, healthy plant green */
     h1, h2, h3 { 
-        color: #2E7D32; 
+        color: #1B5E20; 
         font-weight: 700;
     }
     
-    /* Buttons: Friendly, inviting Kelly Green */
+    /* Action Buttons - Vibrant Leaf Green */
     .stButton > button {
-        background-color: #4CAF50;
+        background-color: #2E7D32;
         color: white;
         border-radius: 8px;
         border: none;
         width: 100%;
-        padding: 10px 16px;
+        padding: 12px;
         font-size: 14px;
         font-weight: 600;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
     }
     
-    /* Button Hover: Sunny, energetic Lime Accent */
+    /* Button Hover - Energetic, bright golden sprout green */
     .stButton > button:hover { 
-        background-color: #8BC34A; 
+        background-color: #4CAF50; 
         color: white;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(46, 125, 50, 0.2);
+    }
+    
+    /* Chat Inputs & Message boxes visibility adjustments */
+    .stChatMessage {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E8F5E9;
+        border-radius: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
