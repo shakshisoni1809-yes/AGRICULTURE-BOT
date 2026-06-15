@@ -10,41 +10,41 @@ load_dotenv()
 # Streamlit Configuration Setup
 st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout="wide")
 
-# PROFESSIONAL 2-COLOR AGRICULTURAL STYLING
+# CLASSIC PROFESSIONAL 2-COLOR STYLING (NAVY & BRIGHT WHITE)
 st.markdown("""
 <style>
-    /* 1. Main App Background (Bone) */
+    /* 1. Main App Background (Crisp Studio Light) */
     .stApp { 
-        background-color: #E5D7C4; 
-        color: #354024; 
+        background-color: #F8FAFC; 
+        color: #0F172A; 
     }
     
-    /* 2. Sidebar Background (Kombu Green) */
+    /* 2. Sidebar Background (Deep Classic Navy) */
     [data-testid="stSidebar"] { 
-        background-color: #354024; 
+        background-color: #1E293B; 
     }
     
-    /* Sidebar Text Elements (Bone) */
+    /* Sidebar Text Elements (White for sharp contrast) */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] label {
-        color: #E5D7C4 !important;
+        color: #FFFFFF !important;
     }
     
-    /* Global Headings (Kombu Green) */
+    /* Global Headings (Deep Slate Navy) */
     h1, h2, h3 { 
-        color: #354024; 
+        color: #1E293B; 
         font-weight: 700;
     }
     
-    /* Professional Clean Buttons (Kombu Green) */
+    /* Professional Clean Buttons (Deep Navy) */
     .stButton > button {
-        background-color: #354024;
-        color: #E5D7C4;
-        border-radius: 8px;
-        border: 1px solid #354024;
+        background-color: #1E293B;
+        color: #FFFFFF;
+        border-radius: 6px;
+        border: 1px solid #1E293B;
         width: 100%;
         padding: 12px;
         font-size: 14px;
@@ -52,18 +52,18 @@ st.markdown("""
         transition: all 0.2s ease-in-out;
     }
     
-    /* Button Hover Interaction (Inverted Style) */
+    /* Button Hover Interaction (Modern Inverted Blue) */
     .stButton > button:hover { 
-        background-color: #E5D7C4; 
-        color: #354024;
-        border: 1px solid #354024;
+        background-color: #38BDF8; 
+        color: #0F172A;
+        border: 1px solid #38BDF8;
     }
     
-    /* Chat Message Elements */
+    /* Chat Message Elements (Polished Clean Cards) */
     .stChatMessage {
-        background-color: #E5D7C4 !important;
-        border: 1px solid #354024;
-        border-radius: 10px;
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -171,7 +171,7 @@ def guardrail(question):
     try:
         result = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[{"role": "user", "content": f"Classify this query into EXACTLY ONE category: FARMING, UNCLEAR, NON_FARMING. Query: {question}. Reply ONLY the category name."}]
+            messages=[{"role": "user", "content": "Classify this query into EXACTLY ONE category: FARMING, UNCLEAR, NON_FARMING. Query: {question}. Reply ONLY the category name."}]
         )
         return result.choices[0].message.content.strip()
     except Exception:
