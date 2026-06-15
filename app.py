@@ -13,18 +13,18 @@ st.set_page_config(page_icon="🌾", page_title="AGRICULTURE ASSISTANT", layout=
 # Custom Agricultural Styling
 st.markdown("""
 <style>
-    /* 1. Main App Background (Bone) */
+    /* Main App Background - Soft, warm, premium 'Bone' tone */
     .stApp { 
         background-color: #E5D7C4; 
         color: #354024; 
     }
     
-    /* 2. Sidebar (Kombu Green) */
+    /* Sidebar - Deep, rich 'Kombu Green' */
     [data-testid="stSidebar"] { 
         background-color: #354024; 
     }
     
-    /* Sidebar text uses the Bone color for crisp visibility */
+    /* Force sidebar text, headers, and labels to be a clean, readable 'Bone' tone */
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
@@ -33,37 +33,40 @@ st.markdown("""
         color: #E5D7C4 !important;
     }
     
-    /* Headings (Kombu Green) */
+    /* Headings - Strong, deep 'Café Noir' earth brown */
     h1, h2, h3 { 
-        color: #354024; 
+        color: #4C3D19; 
         font-weight: 700;
     }
     
-    /* Action Buttons (Kombu Green) */
+    /* Action Buttons - Natural 'Moss Green' */
     .stButton > button {
-        background-color: #354024;
-        color: #E5D7C4;
+        background-color: #889063;
+        color: white;
         border-radius: 8px;
         border: none;
         width: 100%;
         padding: 12px;
         font-size: 14px;
         font-weight: 600;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: all 0.2s ease-in-out;
     }
     
-    /* Button Hover (Inverts the colors) */
+    /* Button Hover - Deepens slightly to 'Kombu Green' on hover */
     .stButton > button:hover { 
-        background-color: #E5D7C4; 
-        color: #354024;
-        border: 2px solid #354024;
+        background-color: #354024; 
+        color: #E5D7C4;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(53, 64, 36, 0.2);
     }
     
-    /* Chat Message Blocks (Clean Bone surfaces) */
+    /* Chat Message Blocks - Clean 'Tan' surfaces for easy reading */
     .stChatMessage {
-        background-color: #E5D7C4 !important;
-        border: 1px solid #354024;
+        background-color: #CFBB99 !important;
+        border: 1px solid #889063;
         border-radius: 10px;
+        color: #354024 !important;
     }
 </style>
 """, unsafe_allow_html=True)
