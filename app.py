@@ -111,7 +111,6 @@ def search_knowledge(question):
         results = collection.query(query_texts=[question], n_results=2)
         return results["documents"][0]
     except Exception as e:
-        print(f"[DEBUG] Search knowledge error: {e}")
         return []
 
 def guardrail(question):
@@ -142,7 +141,8 @@ Reply ONLY the category name. Nothing else."""}]
 # load memory
 conversation_history = loadmemory()
 
-print("Hello!! How can I help you")
+print("hello!!! I am your agriculture assisant")
+print(" How can I help you")
 print("Type quit to exit")
 print()
 
